@@ -1,13 +1,25 @@
 import ProductCard from "./ProductCard"
 
-export default function ProductsGrid({ products, addToCart }) {
+export default function ProductsGrid({ products, addToCart, categories, activeCategory, setActiveCategory }) {
   return (
     <section className="products-section" id="products">
       <div className="section-header">
         <div>
-          <span>Produtos</span>
-          <h2>Destaques da loja</h2>
+          <span className="section-label">Produtos</span>
+          <h2>Destaques da coleção</h2>
         </div>
+      </div>
+
+      <div className="category-tabs">
+        {categories.map((cat) => (
+          <button
+            key={cat.id}
+            className={`category-tab ${activeCategory === cat.id ? "active" : ""}`}
+            onClick={() => setActiveCategory(cat.id)}
+          >
+            {cat.label}
+          </button>
+        ))}
       </div>
 
       <div className="products-grid">

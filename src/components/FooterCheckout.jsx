@@ -1,8 +1,10 @@
-export default function FooterCheckout({ total, checkout, disabled }) {
+export default function FooterCheckout({ total, checkout, disabled, cartCount }) {
   return (
-    <div className="checkout-bar" id="checkout">
-      <div>
-        <span>Total do pedido</span>
+    <div className={`checkout-bar ${disabled ? "hidden" : ""}`} id="checkout">
+      <div className="checkout-bar-left">
+        <span>
+          {cartCount} {cartCount === 1 ? "item" : "itens"} no carrinho
+        </span>
         <strong>
           {total.toLocaleString("pt-BR", {
             style: "currency",
@@ -12,7 +14,7 @@ export default function FooterCheckout({ total, checkout, disabled }) {
       </div>
 
       <button onClick={checkout} disabled={disabled}>
-        Finalizar compra
+        Finalizar compra →
       </button>
     </div>
   )
