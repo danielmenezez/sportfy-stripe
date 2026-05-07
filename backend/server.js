@@ -66,10 +66,11 @@ app.post("/api/create-preference", async (req, res) => {
           email: customer?.email || "cliente@sportfy.com"
         },
         back_urls: {
-          success: process.env.FRONTEND_URL || "http://localhost:5173",
-          failure: process.env.FRONTEND_URL || "http://localhost:5173",
-          pending: process.env.FRONTEND_URL || "http://localhost:5173"
+          success: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/sucesso`,
+          failure: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/falha`,
+          pending: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/pendente`
         },
+        auto_return: "approved",
         statement_descriptor: "SPORTFY",
         external_reference: `SPORTFY-${Date.now()}`
       }
