@@ -1,9 +1,23 @@
 import { useMemo, useState } from "react"
+import { Routes, Route, useLocation } from "react-router-dom"
 import Header from "./components/Header"
 import Hero from "./components/Hero"
 import ProductsGrid from "./components/ProductsGrid"
 import FooterCheckout from "./components/FooterCheckout"
 import CartDrawer from "./components/CartDrawer"
+import SiteFooter from "./components/SiteFooter"
+import PagamentoSucesso from "./pages/PagamentoSucesso"
+import PagamentoFalha from "./pages/PagamentoFalha"
+import PagamentoPendente from "./pages/PagamentoPendente"
+import Produtos from "./pages/Produtos"
+import Sobre from "./pages/Sobre"
+import Carreiras from "./pages/Carreiras"
+import Blog from "./pages/Blog"
+import Imprensa from "./pages/Imprensa"
+import Ajuda from "./pages/Ajuda"
+import AjudaTrocas from "./pages/AjudaTrocas"
+import RastrearPedido from "./pages/RastrearPedido"
+import Contato from "./pages/Contato"
 import { products } from "./data/products"
 
 const CATEGORIES = [
@@ -14,59 +28,41 @@ const CATEGORIES = [
   { id: "esportes", label: "Esportes" }
 ]
 
-export default function App() {
+function useCartState() {
   const [cart, setCart] = useState([])
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [activeCategory, setActiveCategory] = useState("todos")
-  const [toasts, setToasts] = useState([])
-
-  function showToast(message) {
-    const id = Date.now()
-    setToasts((prev) => [...prev, { id, message }])
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id))
-    }, 2800)
-  }
 
   function addToCart(product) {
-    setCart((currentCart) => {
-      const existing = currentCart.find((item) => item.id === product.id)
+    setCart((current) => {
+      const existing = current.find((item) => item.id === product.id)
       if (existing) {
-        return currentCart.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+        return current.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         )
       }
-      return [...currentCart, { ...product, quantity: 1 }]
+      return [...current, { ...product, quantity: 1 }]
     })
-    showToast(`${product.name} adicionado ao carrinho`)
   }
 
   function increaseItem(productId) {
-    setCart((currentCart) =>
-      currentCart.map((item) =>
+    setCart((current) =>
+      current.map((item) =>
         item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
       )
     )
   }
 
   function decreaseItem(productId) {
-    setCart((currentCart) =>
-      currentCart
+    setCart((current) =>
+      current
         .map((item) =>
-          item.id === productId
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
+          item.id === productId ? { ...item, quantity: item.quantity - 1 } : item
         )
         .filter((item) => item.quantity > 0)
     )
   }
 
   function removeItem(productId) {
-    setCart((currentCart) =>
-      currentCart.filter((item) => item.id !== productId)
-    )
+    setCart((current) => current.filter((item) => item.id !== productId))
   }
 
   const total = useMemo(
@@ -78,6 +74,32 @@ export default function App() {
     () => cart.reduce((sum, item) => sum + item.quantity, 0),
     [cart]
   )
+
+  return { cart, addToCart, increaseItem, decreaseItem, removeItem, total, cartCount }
+}
+
+export default function App() {
+  const {
+    cart, addToCart, increaseItem, decreaseItem, removeItem, total, cartCount
+  } = useCartState()
+
+  const [isCartOpen, setIsCartOpen] = useState(false)
+  const [activeCategory, setActiveCategory] = useState("todos")
+  const [toasts, setToasts] = useState([])
+
+  const location = useLocation()
+  const isPaymentPage = location.pathname.startsWith("/pagamento/")
+
+  function showToast(message) {
+    const id = Date.now()
+    setToasts((prev) => [...prev, { id, message }])
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 2800)
+  }
+
+  function addToCartWithToast(product) {
+    addToCart(product)
+    showToast(`${product.name} adicionado ao carrinho`)
+  }
 
   const filteredProducts = useMemo(() => {
     if (activeCategory === "todos") return products
@@ -99,10 +121,7 @@ export default function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cart,
-          customer: {
-            name: "Cliente SportFY",
-            email: "cliente@sportfy.com"
-          }
+          customer: { name: "Cliente SportFY", email: "cliente@sportfy.com" }
         })
       })
 
@@ -119,135 +138,124 @@ export default function App() {
     }
   }
 
+  const sharedCartProps = {
+    cartCount,
+    openCart: () => setIsCartOpen(true),
+    addToCart: addToCartWithToast,
+    checkout,
+    total,
+    disabled: cart.length === 0
+  }
+
   return (
     <>
-      <Header
-        cartCount={cartCount}
-        openCart={() => setIsCartOpen(true)}
-      />
+      <Routes>
+        {/* Página principal */}
+        <Route
+          path="/"
+          element={
+            <>
+              <Header cartCount={cartCount} openCart={() => setIsCartOpen(true)} />
+              <Hero />
 
-      <Hero />
+              <div className="trust-bar">
+                <div className="trust-item">
+                  <span className="trust-item-icon">🚚</span>
+                  Frete grátis acima de R$ 299
+                </div>
+                <div className="trust-item">
+                  <span className="trust-item-icon">🔄</span>
+                  Troca fácil em 30 dias
+                </div>
+                <div className="trust-item">
+                  <span className="trust-item-icon">🔒</span>
+                  Pagamento 100% seguro
+                </div>
+                <div className="trust-item">
+                  <span className="trust-item-icon">⭐</span>
+                  Suporte especializado
+                </div>
+              </div>
 
-      <div className="trust-bar">
-        <div className="trust-item">
-          <span className="trust-item-icon">🚚</span>
-          Frete grátis acima de R$ 299
-        </div>
-        <div className="trust-item">
-          <span className="trust-item-icon">🔄</span>
-          Troca fácil em 30 dias
-        </div>
-        <div className="trust-item">
-          <span className="trust-item-icon">🔒</span>
-          Pagamento 100% seguro
-        </div>
-        <div className="trust-item">
-          <span className="trust-item-icon">⭐</span>
-          Suporte especializado
-        </div>
-      </div>
+              <ProductsGrid
+                products={filteredProducts}
+                addToCart={addToCartWithToast}
+                categories={CATEGORIES}
+                activeCategory={activeCategory}
+                setActiveCategory={setActiveCategory}
+              />
 
-      <ProductsGrid
-        products={filteredProducts}
-        addToCart={addToCart}
-        categories={CATEGORIES}
-        activeCategory={activeCategory}
-        setActiveCategory={setActiveCategory}
-      />
+              <section className="newsletter-section">
+                <h2>Fique por dentro das novidades</h2>
+                <p>Receba ofertas exclusivas e lançamentos direto no seu e-mail.</p>
+                <form
+                  className="newsletter-form"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    showToast("Inscrição realizada com sucesso!")
+                    e.target.reset()
+                  }}
+                >
+                  <input
+                    className="newsletter-input"
+                    type="email"
+                    placeholder="seu@email.com"
+                    required
+                  />
+                  <button type="submit" className="newsletter-btn">
+                    Inscrever-se
+                  </button>
+                </form>
+              </section>
 
-      <section className="newsletter-section">
-        <h2>Fique por dentro das novidades</h2>
-        <p>Receba ofertas exclusivas e lançamentos direto no seu e-mail.</p>
-        <form
-          className="newsletter-form"
-          onSubmit={(e) => {
-            e.preventDefault()
-            showToast("Inscrição realizada com sucesso! 🎉")
-            e.target.reset()
-          }}
-        >
-          <input
-            className="newsletter-input"
-            type="email"
-            placeholder="seu@email.com"
-            required
+              <SiteFooter />
+
+              <FooterCheckout
+                total={total}
+                checkout={checkout}
+                disabled={cart.length === 0}
+                cartCount={cartCount}
+              />
+            </>
+          }
+        />
+
+        {/* Loja — produtos com filtro */}
+        <Route path="/produtos" element={<Produtos {...sharedCartProps} />} />
+
+        {/* Retorno do pagamento */}
+        <Route path="/pagamento/sucesso" element={<PagamentoSucesso />} />
+        <Route path="/pagamento/falha" element={<PagamentoFalha />} />
+        <Route path="/pagamento/pendente" element={<PagamentoPendente />} />
+
+        {/* Páginas institucionais */}
+        <Route path="/sobre" element={<Sobre />} />
+        <Route path="/carreiras" element={<Carreiras />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/imprensa" element={<Imprensa />} />
+
+        {/* Suporte */}
+        <Route path="/ajuda" element={<Ajuda />} />
+        <Route path="/ajuda/trocas-e-devolucoes" element={<AjudaTrocas />} />
+        <Route path="/rastrear-pedido" element={<RastrearPedido />} />
+        <Route path="/contato" element={<Contato />} />
+      </Routes>
+
+      {/* Overlays globais — ocultos em páginas de pagamento */}
+      {!isPaymentPage && (
+        <>
+          <CartDrawer
+            isOpen={isCartOpen}
+            cart={cart}
+            total={total}
+            closeCart={() => setIsCartOpen(false)}
+            increaseItem={increaseItem}
+            decreaseItem={decreaseItem}
+            removeItem={removeItem}
+            checkout={checkout}
           />
-          <button type="submit" className="newsletter-btn">
-            Inscrever-se
-          </button>
-        </form>
-      </section>
-
-      <footer className="footer">
-        <div className="footer-grid">
-          <div className="footer-brand">
-            <div className="footer-logo">
-              Sport<span>F</span><strong>Y</strong>
-            </div>
-            <p>
-              Equipamentos e roupas esportivas de alta performance para quem leva o esporte a sério.
-            </p>
-          </div>
-
-          <div className="footer-col">
-            <h4>Loja</h4>
-            <ul>
-              <li><a href="#products">Todos os produtos</a></li>
-              <li><a href="#products">Ofertas</a></li>
-              <li><a href="#products">Novidades</a></li>
-              <li><a href="#products">Mais vendidos</a></li>
-            </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Empresa</h4>
-            <ul>
-              <li><a href="#">Sobre nós</a></li>
-              <li><a href="#">Carreiras</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Imprensa</a></li>
-            </ul>
-          </div>
-
-          <div className="footer-col">
-            <h4>Suporte</h4>
-            <ul>
-              <li><a href="#">Central de ajuda</a></li>
-              <li><a href="#">Trocas e devoluções</a></li>
-              <li><a href="#">Rastrear pedido</a></li>
-              <li><a href="#">Fale conosco</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <div className="footer-bottom">
-          <p>© 2025 SportFY. Todos os direitos reservados.</p>
-          <div className="footer-payments">
-            <span className="payment-badge">PIX</span>
-            <span className="payment-badge">VISA</span>
-            <span className="payment-badge">MASTER</span>
-            <span className="payment-badge">MP</span>
-          </div>
-        </div>
-      </footer>
-
-      <FooterCheckout
-        total={total}
-        checkout={checkout}
-        disabled={cart.length === 0}
-        cartCount={cartCount}
-      />
-
-      <CartDrawer
-        isOpen={isCartOpen}
-        cart={cart}
-        total={total}
-        closeCart={() => setIsCartOpen(false)}
-        increaseItem={increaseItem}
-        decreaseItem={decreaseItem}
-        removeItem={removeItem}
-        checkout={checkout}
-      />
+        </>
+      )}
 
       <div className="toast-container">
         {toasts.map((toast) => (

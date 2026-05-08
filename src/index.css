@@ -1129,3 +1129,450 @@ input {
     text-align: center;
   }
 }
+
+/* ─── EMPTY PRODUCTS STATE ─── */
+
+.empty-products {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  text-align: center;
+}
+
+.empty-products-icon {
+  font-size: 52px;
+  margin-bottom: 16px;
+}
+
+.empty-products h3 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.empty-products p {
+  color: var(--gray-500);
+  font-size: 14px;
+}
+
+/* ─── SIMPLE HEADER (páginas internas) ─── */
+
+.simple-header {
+  width: 100%;
+  height: 68px;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+  background: var(--white);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.simple-header .logo {
+  font-size: 22px;
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: -1.5px;
+  text-decoration: none;
+  color: var(--dark);
+}
+
+.simple-header-back {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gray-500);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.simple-header-back:hover {
+  color: var(--green);
+}
+
+/* ─── PAGE CONTENT (páginas internas) ─── */
+
+.page-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 5% 80px;
+}
+
+.placeholder-hero {
+  padding: 64px 5% 48px;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.placeholder-hero h1 {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  letter-spacing: -2.5px;
+  margin: 10px 0 18px;
+}
+
+.placeholder-hero p {
+  font-size: 17px;
+  color: var(--gray-500);
+  line-height: 1.75;
+  max-width: 620px;
+}
+
+.placeholder-content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 5% 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.placeholder-block {
+  padding: 32px 36px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+}
+
+.placeholder-block--highlight {
+  background: var(--green-light);
+  border-color: transparent;
+}
+
+.placeholder-block h2 {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+.placeholder-block p {
+  font-size: 15px;
+  color: var(--gray-700);
+  line-height: 1.75;
+}
+
+.help-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.help-links li a {
+  color: var(--green);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  transition: color var(--transition);
+}
+
+.help-links li a:hover {
+  color: var(--green-dark);
+  text-decoration: underline;
+}
+
+/* ─── RASTREAR PEDIDO ─── */
+
+.rastrear-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.rastrear-input {
+  flex: 1;
+  padding: 13px 18px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-full);
+  font-size: 15px;
+  outline: none;
+  color: var(--dark);
+  transition: border-color var(--transition);
+}
+
+.rastrear-input:focus {
+  border-color: var(--green);
+}
+
+.rastrear-btn {
+  padding: 13px 24px;
+  background: var(--green);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition);
+}
+
+.rastrear-btn:hover {
+  background: var(--green-dark);
+}
+
+.rastrear-resultado {
+  padding: 14px 18px;
+  background: #fff3cd;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  color: #856404;
+}
+
+/* ─── CONTATO ─── */
+
+.contato-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contato-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contato-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gray-700);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contato-field input,
+.contato-field textarea {
+  padding: 12px 16px;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  outline: none;
+  color: var(--dark);
+  resize: vertical;
+  transition: border-color var(--transition);
+}
+
+.contato-field input:focus,
+.contato-field textarea:focus {
+  border-color: var(--green);
+}
+
+.contato-sucesso {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 0;
+}
+
+.contato-sucesso-icon {
+  width: 56px;
+  height: 56px;
+  background: var(--green);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  margin-bottom: 16px;
+}
+
+.contato-sucesso h2 {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+}
+
+.contato-sucesso p {
+  color: var(--gray-500);
+  font-size: 15px;
+}
+
+/* ─── PRODUTOS PAGE HERO ─── */
+
+.produtos-page-hero {
+  padding: 56px 5% 0;
+  background: linear-gradient(140deg, #fafffe 0%, #f0faf5 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.produtos-page-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  letter-spacing: -2.5px;
+  margin: 10px 0 14px;
+}
+
+.produtos-page-subtitle {
+  font-size: 16px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  max-width: 520px;
+  padding-bottom: 40px;
+}
+
+/* ─── PAYMENT RESULT PAGES ─── */
+
+.payment-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+}
+
+.payment-page--sucesso {
+  background: linear-gradient(140deg, #f0faf5 0%, #e8f5ee 100%);
+}
+
+.payment-page--falha {
+  background: linear-gradient(140deg, #fff5f5 0%, #ffe8e8 100%);
+}
+
+.payment-page--pendente {
+  background: linear-gradient(140deg, #fffdf0 0%, #fff8e1 100%);
+}
+
+.payment-page-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 56px 48px;
+  max-width: 480px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.payment-page-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  margin: 0 auto 24px;
+}
+
+.payment-page-icon--sucesso {
+  background: var(--green-light);
+  color: var(--green);
+}
+
+.payment-page-icon--falha {
+  background: #ffe8e8;
+  color: #c0392b;
+}
+
+.payment-page-icon--pendente {
+  background: #fff8e1;
+  color: #e6a817;
+}
+
+.payment-page-title {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+  color: var(--dark);
+}
+
+.payment-page-description {
+  font-size: 15px;
+  color: var(--gray-500);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+.payment-page-info {
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+
+.payment-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0;
+  font-size: 13px;
+}
+
+.payment-info-row span {
+  color: var(--gray-500);
+  font-weight: 600;
+}
+
+.payment-info-row strong {
+  color: var(--dark);
+  font-size: 12px;
+  word-break: break-all;
+  max-width: 200px;
+  text-align: right;
+}
+
+.payment-page-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.payment-btn {
+  display: block;
+  padding: 15px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 15px;
+  text-decoration: none;
+  text-align: center;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.payment-btn--primary {
+  background: var(--green);
+  color: var(--white);
+}
+
+.payment-btn--primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+
+.payment-btn--ghost {
+  background: transparent;
+  color: var(--gray-500);
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
+}
+
+.payment-btn--ghost:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+@media (max-width: 480px) {
+  .payment-page-card {
+    padding: 36px 24px;
+  }
+
+  .rastrear-form {
+    flex-direction: column;
+  }
+
+  .placeholder-block {
+    padding: 24px 20px;
+  }
+}
