@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(dir c:\\\\Users\\\\daniel\\\\Documents\\\\sportfy\\\\backend | Where-Object { $_.Name -ne \"node_modules\" })",
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
