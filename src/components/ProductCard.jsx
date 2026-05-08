@@ -9,7 +9,14 @@ export default function ProductCard({ product, addToCart }) {
   return (
     <article className="product-card">
       <div className="product-image">
-        <img src={product.image} alt={product.name} />
+        <img
+          src={product.image}
+          alt={product.name}
+          onError={(e) => {
+            e.target.onerror = null
+            e.target.style.opacity = "0"
+          }}
+        />
         {product.badge && (
           <span className={`product-badge ${product.badge.toLowerCase()}`}>
             {product.badge}

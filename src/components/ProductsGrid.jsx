@@ -22,15 +22,23 @@ export default function ProductsGrid({ products, addToCart, categories, activeCa
         ))}
       </div>
 
-      <div className="products-grid">
-        {products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            addToCart={addToCart}
-          />
-        ))}
-      </div>
+      {products.length === 0 ? (
+        <div className="empty-products">
+          <div className="empty-products-icon">🔍</div>
+          <h3>Nenhum produto encontrado</h3>
+          <p>Tente outra categoria ou explore toda a coleção.</p>
+        </div>
+      ) : (
+        <div className="products-grid">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              addToCart={addToCart}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
