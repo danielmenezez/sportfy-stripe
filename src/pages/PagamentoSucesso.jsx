@@ -3,26 +3,20 @@ import { useEffect, useState } from "react"
 
 export default function PagamentoSucesso() {
   const [params] = useSearchParams()
-  const paymentId = params.get("payment_id") || params.get("collection_id")
-  const externalRef = params.get("external_reference")
+  const sessionId = params.get("session_id")
   const [status, setStatus] = useState(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (paymentId) {
+    if (sessionId) {
       setLoading(true)
-      fetch(`${import.meta.env.VITE_API_URL}/api/payment-status/${paymentId}`)
-        .then(res => res.json())
-        .then(data => {
-          setStatus(data.status)
-        })
-        .catch(err => {
-          console.error("Erro ao verificar status:", err)
-          setStatus("unknown")
-        })
+      fetch(`${import.meta.env.VITE_API_URL}/api/payment-status/${sessionId}`)
+        .then((res) => res.json())
+        .then((data) => setStatus(data.status))
+        .catch(() => setStatus("unknown"))
         .finally(() => setLoading(false))
     }
-  }, [paymentId])
+  }, [sessionId])
 
   if (loading) {
     return (
@@ -35,14 +29,14 @@ export default function PagamentoSucesso() {
     )
   }
 
-  if (status && status !== "approved") {
+  if (status && status !== "paid") {
     return (
       <div className="payment-page payment-page--falha">
         <div className="payment-page-card">
           <div className="payment-page-icon payment-page-icon--falha">✕</div>
           <h1 className="payment-page-title">Pagamento não aprovado</h1>
           <p className="payment-page-description">
-            Seu pagamento não foi aprovado. Status: {status}.
+            Seu pagamento não foi confirmado. Status: {status}.
           </p>
           <div className="payment-page-actions">
             <Link to="/" className="payment-btn payment-btn--primary">
@@ -63,20 +57,12 @@ export default function PagamentoSucesso() {
           Seu pedido foi confirmado com sucesso. Em breve você receberá um e-mail com os detalhes da compra.
         </p>
 
-        {(paymentId || externalRef) && (
+        {sessionId && (
           <div className="payment-page-info">
-            {paymentId && (
-              <div className="payment-info-row">
-                <span>ID do pagamento</span>
-                <strong>{paymentId}</strong>
-              </div>
-            )}
-            {externalRef && (
-              <div className="payment-info-row">
-                <span>Referência</span>
-                <strong>{externalRef}</strong>
-              </div>
-            )}
+            <div className="payment-info-row">
+              <span>ID do pedido</span>
+              <strong>{sessionId}</strong>
+            </div>
           </div>
         )}
 

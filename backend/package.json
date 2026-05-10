@@ -1,7 +1,7 @@
 {
   "name": "sportfy-backend",
   "version": "1.0.0",
-  "description": "Backend do e-commerce SportFY com Mercado Pago",
+  "description": "Backend do e-commerce SportFY com Stripe",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -12,6 +12,6 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "mercadopago": "^2.9.0"
+    "stripe": "^17.7.0"
   }
 }

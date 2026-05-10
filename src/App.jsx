@@ -116,7 +116,7 @@ export default function App() {
     }
 
     try {
-      const response = await fetch(`${apiUrl}/api/create-preference`, {
+      const response = await fetch(`${apiUrl}/api/create-checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -132,7 +132,7 @@ export default function App() {
         return
       }
 
-      window.location.href = data.sandbox_init_point || data.init_point
+      window.location.href = data.url
     } catch {
       showToast("Erro ao conectar com o servidor.")
     }
