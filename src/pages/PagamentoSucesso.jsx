@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 
 export default function PagamentoSucesso() {
   const [params] = useSearchParams()
-  const sessionId = params.get("session_id")
+  const sessionId = params.get("session_id") || params.get("payment_id") || params.get("collection_id")
   const [status, setStatus] = useState(null)
   const [loading, setLoading] = useState(false)
 
