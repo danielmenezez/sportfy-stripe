@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 import "dotenv/config"
-import { MercadoPagoConfig, Preference } from "mercadopago"
+import { MercadoPagoConfig, Preference, Payment } from "mercadopago"
 
 const app = express()
 
@@ -42,39 +42,51 @@ app.get("/", (req, res) => {
 })
 
 app.post("/api/create-preference", async (req, res) => {
+  if (!process.env.MERCADO_PAGO_ACCESS_TOKEN) {
+    console.error("MERCADO_PAGO_ACCESS_TOKEN não configurado no .env")
+    return res.status(500).json({ error: "Configuração de pagamento ausente no servidor." })
+  }
+
   try {
     const { cart, customer } = req.body
 
     if (!cart || cart.length === 0) {
-      return res.status(400).json({
-        error: "Carrinho vazio"
-      })
+      return res.status(400).json({ error: "Carrinho vazio" })
     }
 
-    const items = cart.map((item) => ({
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"
+    const backendUrl = process.env.BACKEND_URL
+
+    const items = cart.map((item, index) => ({
+      id: String(item.id ?? index + 1),
       title: item.name,
       quantity: Number(item.quantity),
-      unit_price: Number(item.price),
+      unit_price: parseFloat(Number(item.price).toFixed(2)),
       currency_id: "BRL"
     }))
 
-    const result = await preference.create({
-      body: {
-        items,
-        payer: {
-          name: customer?.name || "Cliente SportFY",
-          email: customer?.email || "cliente@sportfy.com"
-        },
-        back_urls: {
-          success: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/sucesso`,
-          failure: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/falha`,
-          pending: `${process.env.FRONTEND_URL || "http://localhost:5173"}/pagamento/pendente`
-        },
-        auto_return: "approved",
-        statement_descriptor: "SPORTFY",
-        external_reference: `SPORTFY-${Date.now()}`
-      }
-    })
+    const preferenceBody = {
+      items,
+      payer: {
+        name: customer?.name || "Cliente SportFY",
+        email: customer?.email || "cliente@sportfy.com"
+      },
+      back_urls: {
+        success: `${frontendUrl}/pagamento/sucesso`,
+        failure: `${frontendUrl}/pagamento/falha`,
+        pending: `${frontendUrl}/pagamento/pendente`
+      },
+      auto_return: "approved",
+      statement_descriptor: "SPORTFY",
+      external_reference: `SPORTFY-${Date.now()}`
+    }
+
+    // só inclui notification_url se for uma URL pública (não localhost)
+    if (backendUrl && !backendUrl.includes("localhost")) {
+      preferenceBody.notification_url = `${backendUrl}/api/webhook`
+    }
+
+    const result = await preference.create({ body: preferenceBody })
 
     return res.json({
       id: result.id,
@@ -89,6 +101,24 @@ app.post("/api/create-preference", async (req, res) => {
       details: error.message
     })
   }
+})
+
+app.get("/api/payment-status/:id", async (req, res) => {
+  try {
+    const payment = new Payment(client)
+    const result = await payment.get({ id: req.params.id })
+    res.json(result)
+  } catch (error) {
+    console.error("Erro ao buscar status do pagamento:", error)
+    res.status(500).json({ error: "Erro ao buscar status do pagamento" })
+  }
+})
+
+app.post("/api/webhook", (req, res) => {
+  console.log("Webhook recebido:", req.body)
+  // Aqui você pode processar a notificação do MercadoPago
+  // Por exemplo, atualizar status do pedido em um banco de dados
+  res.sendStatus(200)
 })
 
 const PORT = process.env.PORT || 3001

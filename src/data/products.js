@@ -47,7 +47,7 @@ export const products = [
     category: "roupas",
     badge: null,
     description: "Short leve com tecnologia anti-suor ideal para treinos de alta intensidade.",
-    image: "https://images.unsplash.com/photo-1506629905607-d9c297d51d10?w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1617952236317-0bd127407984?w=900&auto=format&fit=crop"
   },
   {
     id: 6,
@@ -67,7 +67,7 @@ export const products = [
     category: "roupas",
     badge: "Novo",
     description: "Legging de compressão com suporte muscular progressivo para melhor desempenho.",
-    image: "https://images.unsplash.com/photo-1506629905543-f15be0e8d7bd?w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=900&auto=format&fit=crop"
   },
   {
     id: 8,

@@ -13,8 +13,8 @@ export default function ProductCard({ product, addToCart }) {
           src={product.image}
           alt={product.name}
           onError={(e) => {
-            e.target.onerror = null
-            e.target.style.opacity = "0"
+            e.currentTarget.src = "https://placehold.co/900x700/e8e8e8/999?text=Imagem+indisponível"
+            e.currentTarget.onerror = null
           }}
         />
         {product.badge && (
