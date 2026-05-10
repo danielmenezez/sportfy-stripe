@@ -76,6 +76,10 @@ app.post("/api/create-preference", async (req, res) => {
         failure: `${frontendUrl}/pagamento/falha`,
         pending: `${frontendUrl}/pagamento/pendente`
       },
+      payment_methods: {
+        excluded_payment_types: [{ id: "ticket" }],
+        installments: 12
+      },
       auto_return: "approved",
       statement_descriptor: "SPORTFY",
       external_reference: `SPORTFY-${Date.now()}`
@@ -88,7 +92,7 @@ app.post("/api/create-preference", async (req, res) => {
 
     const result = await preference.create({ body: preferenceBody })
 
-    const isSandbox = process.env.MERCADO_PAGO_ACCESS_TOKEN?.startsWith("TEST-")
+    const isSandbox = process.env.MP_SANDBOX === "true"
 
     return res.json({
       id: result.id,
