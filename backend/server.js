@@ -88,10 +88,12 @@ app.post("/api/create-preference", async (req, res) => {
 
     const result = await preference.create({ body: preferenceBody })
 
+    const isSandbox = process.env.MERCADO_PAGO_ACCESS_TOKEN?.startsWith("TEST-")
+
     return res.json({
       id: result.id,
       init_point: result.init_point,
-      sandbox_init_point: result.sandbox_init_point
+      sandbox_init_point: isSandbox ? result.sandbox_init_point : null
     })
   } catch (error) {
     console.error("Erro Mercado Pago:", error)

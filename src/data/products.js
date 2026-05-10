@@ -47,7 +47,7 @@ export const products = [
     category: "roupas",
     badge: null,
     description: "Short leve com tecnologia anti-suor ideal para treinos de alta intensidade.",
-    image: "https://images.unsplash.com/photo-1617952236317-0bd127407984?w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1719473442915-016f3ebda79a?w=900&auto=format&fit=crop"
   },
   {
     id: 6,
