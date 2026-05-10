@@ -42,17 +42,26 @@ app.get("/", (req, res) => {
 })
 
 app.post("/api/create-preference", async (req, res) => {
+  const { cart, customer } = req.body
+
+  if (!cart || cart.length === 0) {
+    return res.status(400).json({ error: "Carrinho vazio" })
+  }
+
+  // Modo simulação: redireciona direto para a página de sucesso sem chamar o MP
+  if (process.env.MP_SIMULATE === "true") {
+    const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"
+    const fakeId = `SIM-${Date.now()}`
+    const successUrl = `${frontendUrl}/pagamento/sucesso?payment_id=${fakeId}&status=approved&external_reference=SPORTFY-${Date.now()}`
+    return res.json({ id: fakeId, init_point: successUrl, sandbox_init_point: null })
+  }
+
   if (!process.env.MERCADO_PAGO_ACCESS_TOKEN) {
     console.error("MERCADO_PAGO_ACCESS_TOKEN não configurado no .env")
     return res.status(500).json({ error: "Configuração de pagamento ausente no servidor." })
   }
 
   try {
-    const { cart, customer } = req.body
-
-    if (!cart || cart.length === 0) {
-      return res.status(400).json({ error: "Carrinho vazio" })
-    }
 
     const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"
     const backendUrl = process.env.BACKEND_URL
@@ -110,6 +119,10 @@ app.post("/api/create-preference", async (req, res) => {
 })
 
 app.get("/api/payment-status/:id", async (req, res) => {
+  if (req.params.id.startsWith("SIM-")) {
+    return res.json({ id: req.params.id, status: "approved" })
+  }
+
   try {
     const payment = new Payment(client)
     const result = await payment.get({ id: req.params.id })
