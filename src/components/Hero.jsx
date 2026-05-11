@@ -2,7 +2,7 @@ export default function Hero() {
   return (
     <section className="hero">
       <div className="hero-text">
-        <span className="eyebrow">✦ Nova Coleção 2025</span>
+        <span className="eyebrow">✦ Nova Coleção 2026</span>
 
         <h1>
           Performance<br />

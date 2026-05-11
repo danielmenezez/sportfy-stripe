@@ -17,7 +17,7 @@ export const products = [
     category: "calcados",
     badge: "Novo",
     description: "Tênis premium com amortecimento responsivo para corridas de alto impacto.",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=900&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1532444458054-01a7dd3e9fca?w=900&auto=format&fit=crop"
   },
   {
     id: 3,

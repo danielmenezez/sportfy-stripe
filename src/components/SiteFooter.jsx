@@ -45,7 +45,7 @@ export default function SiteFooter() {
       </div>
 
       <div className="footer-bottom">
-        <p>© 2025 SportFY. Todos os direitos reservados.</p>
+        <p>© 2026 SportFY. Todos os direitos reservados.</p>
         <div className="footer-payments">
           <span className="payment-badge">PIX</span>
           <span className="payment-badge">VISA</span>
