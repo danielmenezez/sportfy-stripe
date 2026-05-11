@@ -39,8 +39,8 @@ export default function Hero() {
       <div className="hero-image-wrap">
         <div className="hero-image">
           <img
-            src="https://images.unsplash.com/photo-1552346154-21d32810aba3?w=1200&auto=format&fit=crop"
-            alt="Tênis esportivo premium"
+            src="https://images.unsplash.com/photo-1532444458054-01a7dd3e9fca?w=1200&auto=format&fit=crop"
+            alt="Atletas correndo na pista"
           />
         </div>
 
